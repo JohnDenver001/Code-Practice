@@ -19,11 +19,29 @@ def mult(*number):
 def div(numOne, numTwo):
     return numOne / numTwo
 
-def isCountValid(count):
-    if count > 0:
-        is_count_valid = True
-    else:
-        is_count_valid = False
+def is_count_valid():
+    try:
+        count = int(input("Enter How Many Numbers You Want to Add: "))
+        if count > 0:
+            return count
+        else:
+            print("Numbers Must be Greater than 0.")
+            print()
+            return None
+    except ValueError:
+        print("Please Input Numbers Only")
+        print()
+        return None
+
+def is_number_valid(prompt):
+    valid = False
+    while not valid:
+        try:
+            number = int(input(prompt))
+            return number
+        except ValueError:
+            print("Please Enter Numbers Only!")
+            print()
 
 user_name = input("Enter Your Name: ")
 print("Hello", user_name)
@@ -36,6 +54,7 @@ print("         Enter 3 for Multiplication")
 print("         Enter 4 for  Division")
 print("===========================================")
 
+user_input = 0
 isUserOperationInputValid = False
 while not isUserOperationInputValid:
     try:
@@ -52,35 +71,13 @@ while not isUserOperationInputValid:
 continue_calculating = True
 while continue_calculating:
 
-
-
-
-
-
-
-    isCountValid = False
     if user_input == 1:
-        add_numbers = []
-        while not isCountValid:
-            try:
-                count = int(input("Enter How Many Number You Want to Add: "))
-                if count > 0:
-                    isCountValid = True
-                    try:
-                        for i in range(count):
-                            inputs = int(input (f"Enter Number {i + 1}: "))
-                            if inputs > 0:
-                                add_numbers.append(inputs)
-                                result = add(*add_numbers)
-                        print("The Result is:", result)
-                    except ValueError:
-                        print("Please Enter Numbers Only!")
-                else:
-                    print()
-                    print("Please Enter Positive Integer Only!")
-                    print()
-            except ValueError:
-                print("Please Input Number Only!")
+        add_num = []
+        count = None
+        while count is None:
+            count = is_count_valid()
+        for i in range(count):
+            inputs = is_number_valid(f"Enter Number {1 + i}: ")
 
 
 
