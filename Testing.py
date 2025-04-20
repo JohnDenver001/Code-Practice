@@ -41,6 +41,16 @@ while continue_calculating:
         result = mult(*inputs)
         print("The Result is: ", result)
 
-
-
+    if user_input == 4:
+        print("Please take note that you can only enter two number at once.")
+        is_div_valid = False
+        while not is_div_valid:
+            try:
+                numerator = float(input("Please Enter the Numerator: "))
+                result = div(numerator, denominator_input_validation())
+                print("The Result is:", result)
+                is_div_valid = True
+            except ValueError:
+                print("Please Enter Number Only!")
+                print()
     continue_calculating = cont_calculating()

@@ -37,7 +37,7 @@ def is_number_valid(prompt):
     number_valid = False
     while not number_valid:
         try:
-            number = int(input(prompt))
+            number = float(input(prompt))
             return number
         except ValueError:
             print("Please Enter Numbers Only!")
@@ -68,4 +68,18 @@ def get_user_operation():
                 return user
         except ValueError:
             print("Please Input Number Only!")
+            print()
+
+def denominator_input_validation():
+    is_denominator_valid = False
+    while not is_denominator_valid:
+        try:
+            denominator = float(input("Please Enter the Denominator: "))
+            if denominator != 0:
+                is_denominator_valid = True
+                return denominator
+            else:
+                print("0 as denominator is invalid!")
+        except ValueError:
+            print("Please Enter Number Only!")
             print()
