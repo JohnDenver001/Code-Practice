@@ -121,6 +121,13 @@ def update_student_grade():
     if not student_found:
         print("Student not found!")
 
+def delete_student():
+    delete_name = input("Which student you want to delete? ").lower()
+    for student in students:
+        if student["name"].lower() == delete_name:
+            print()
+
+
 students = []
 
 user_continuation = True
@@ -137,8 +144,3 @@ while user_continuation:
     elif operation == 5:
         update_student_grade()
     user_continuation = user_continue()
-
-
-
-
-

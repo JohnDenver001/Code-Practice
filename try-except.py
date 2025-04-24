@@ -1,22 +1,48 @@
-students = []
+students = [
+    {
+        "name": "john",
+        "course": "BSIT",
+        "age": 19
+    },
+    {
+        "name": "denver",
+        "course": "BSIS",
+        "age": 20
+    }
+]
 
-name = input("What is the student's name? ")
-while True:
-    try:
-        math_grade = float(input("What is the student's grade in math subject? "))
-        science_grade = float(input("What is the student's grade in science subject? "))
-        english_grade = float(input("What is the student's grade in english subject?" ))
-        student_info = {
-            "name": name,
-            "math": math_grade,
-            "science": science_grade,
-            "english": english_grade
-        }
-        students.append(student_info)
-        break
-    except ValueError:
-        print("Please Enter Number Only!")
+def validate_number(function):
+    while True:
+        try:
+            input(function)
+            int(function)
+            return function
+        except ValueError:
+            print("Please Input numbers only!")
+
+def get_user_operation():
+    is_user_input_valid = False
+    while not is_user_input_valid:
+        choices = validate_number("============================ \n"
+                    "What would you like to do? \n"
+                    "============================ \n"
+                    "1. Add a student and their grade \n"
+                    "2. View all student and their grade \n"
+                    "3. View student's specific grade \n"
+                    "4. View student's GWA\n"
+                    "5. Update a grade \n"
+                    "6. Delete a student \n"
+                    "7. Show class average \n"
+                    "8. Show student average \n"
+                    "9. Exit \n"
+                    "Input: ")
         print()
 
-for student in students:
-    print(student["name"])
+        if choices < 1 or choices > 9:
+            print("Please enter number 1-7 only!")
+            print()
+        else:
+            is_user_input_valid = True
+            return choices
+
+get_user_operation()
