@@ -15,7 +15,7 @@ def validate_number(function):
     while True:
         try:
             input(function)
-            int(function)
+
             return function
         except ValueError:
             print("Please Input numbers only!")
