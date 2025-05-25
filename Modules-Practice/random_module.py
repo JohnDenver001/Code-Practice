@@ -1,56 +1,97 @@
 import random
 
-def is_number_valid(num):
+def validate_number(word):
     while True:
         try:
-            num_guess = int(input(num))
-            return num_guess
+            number = int(input(word))
+            return number
         except ValueError:
-            print("Please input number only!")
+            print("Please enter number only!")
+            print()
+
+def difficulty():
+    while True:
+        difficulty_level = validate_number("Please choose difficulty level: \n"
+                                           "[1] Easy \n"
+                                           "[2] Medium \n"
+                                           "[3] Hard \n"
+                                           "Choice (1-3): ")
+        if difficulty_level == 1:
+            first = 1
+            second = 10
+        elif difficulty_level == 2:
+            first = 1
+            second = 30
+        elif difficulty_level == 3:
+            first = 1
+            second = 50
+        else:
+            print("Please enter number 1-3 only! ")
+            print()
+            continue
+        return first, second
 
 def user_continue():
     while True:
-        print("Do you still want to continue?")
-        user_cont = "YES or NO: ".upper()
-        if user_cont == "YES":
+        cont = input("Do you still want to continue? (YES or NO): ").upper()
+        if cont == "YES":
+            print()
             return True
-        elif user_cont == "NO":
+        elif cont == "NO":
+            print("Thank you!")
             return False
         else:
-            print("Please input YES or NO only!")
+            print("Please enter YES or NO only!")
 
-def user_reset():
-    secret_number = random.randint(1, 5)
-    print("|  Random Number has been generated  |")
-    print("|  The number is in between 1 and 5  |")
-    return secret_number
+def clue(guesses, secret):
+    if guesses > secret:
+        print("Too High!")
+    elif secret > guesses:
+        print("Too Low!")
 
-def user_lives(life):
-    if life == 3:
-        print("You got 3 more guess")
-    elif life == 2:
-        print("The life's ticking, you only got 2!")
-    elif life == 1:
-        print("One more guess to go!")
-    elif life == 0:
-        return False
+def best_tries(life):
+    tries = []
+    if life > 0:
+        tries.append(life)
+    if len(tries) > 1:
+        for i in range(len(tries)):
+            if tries[(i+1)] > tries[i]:
+                print(f"High score: {tries[(i+1)]}")
+    else:
+        print(f"Current score: {tries[0]}")
+
+
+
+def main_game(secret_number):
+    life = 5
+    while life > 0:
+        print(f"You have {life} remaining tries")
+        guess = validate_number("Enter your guess: ")
+        if secret_number == guess:
+            print("Correct!")
+            print()
+            break
+        else:
+            clue(guess, secret_number)
+            life -= 1
+            print("Incorrect")
+            print()
+    if life == 0:
+        print("You died! \n"
+              "Better luck next time!")
+        print()
+    return life
 
 def main():
-    print("===========================")
-    print(" Welcome to GUESSING GAME!")
-    print("===========================")
-    print()
+    user_cont = True
+    while user_cont:
+        a, b = difficulty()
+        secret_number = random.randint(a, b)
+        print("Number has been generated.")
+        print()
+        best_tries(main_game(secret_number))
 
-    secret_number = user_reset()
-
-    user_correct = False
-    while not user_correct:
-        user_guess = is_number_valid("Please input your guess here: ")
-        if user_guess == secret_number:
-            print(f"{user_guess} is correct!")
-            user_correct = True
-        else:
-            print("Enkk! Wrong Guess!")
-            print()
+        user_cont = user_continue()
 
 main()
+
