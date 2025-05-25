@@ -1,4 +1,4 @@
-from calculator_functions import *
+from Calculator.calculator_functions import *
 
 user_name = input("Enter Your Name: ")
 print("Hello", user_name)
