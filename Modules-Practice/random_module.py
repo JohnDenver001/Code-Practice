@@ -1,5 +1,4 @@
 import random
-
 def validate_number(word):
     while True:
         try:
@@ -49,18 +48,14 @@ def clue(guesses, secret):
     elif secret > guesses:
         print("Too Low!")
 
-def best_tries(life):
-    tries = []
-    if life > 0:
-        tries.append(life)
-    if len(tries) > 1:
-        for i in range(len(tries)):
-            if tries[(i+1)] > tries[i]:
-                print(f"High score: {tries[(i+1)]}")
+def best_tries(life, best_trys):
+    if life > best_trys:
+        best_trys = life
+        print(f"Congrats on your new high score: {best_trys}\n")
     else:
-        print(f"Current score: {tries[0]}")
-
-
+        print(f"Current score: {life}\n"
+              f"High score: {best_trys}\n")
+    return best_trys
 
 def main_game(secret_number):
     life = 5
@@ -83,13 +78,18 @@ def main_game(secret_number):
     return life
 
 def main():
+    player_name = input("Name: ")
+    print(f"Goodluck, {player_name}!")
+    print()
+
+    best_try = 0
     user_cont = True
     while user_cont:
         a, b = difficulty()
         secret_number = random.randint(a, b)
         print("Number has been generated.")
         print()
-        best_tries(main_game(secret_number))
+        best_try = best_tries(main_game(secret_number), best_try)
 
         user_cont = user_continue()
 
