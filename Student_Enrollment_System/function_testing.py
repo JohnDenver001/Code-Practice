@@ -16,12 +16,17 @@ students = [
     }
 ]
 
-find_id = 101
+course = "BSIT"
+
+find_id = int(input("Enter student's ID: "))
+# Check if student id exists
 for student in students:
     if find_id == student["student_id"]:
-        #Proceed
-        print(student["student_id"])
         print(student["student_name"])
-    else:
-        #Print student cannot find
-        print("WALA")
+        student["Course"] = "BSIT"
+        break
+else:
+    print(f"{find_id} can't be found!")
+
+
+print(students)
