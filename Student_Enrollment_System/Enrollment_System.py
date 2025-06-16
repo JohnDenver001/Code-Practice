@@ -138,7 +138,6 @@ def view_students_in_course():
     print(f"List of students enrolled in {view_course.upper()}:\n"
           f"{'\n'.join(student_in_course)}")
 
-
 def remove_student():
     remove_id = validate_integer("Enter student ID: ")
 
