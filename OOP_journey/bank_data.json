@@ -1,0 +1,22 @@
+[
+    {
+        "name": "John",
+        "id": 101,
+        "age": 18,
+        "status": "Single",
+        "sex": "Male",
+        "bank_id": 100,
+        "bank_cash_amount": 10000,
+        "bank_expiration_date": 2005
+    },
+    {
+        "name": "Denver",
+        "id": 102,
+        "age": 19,
+        "status": "Taken",
+        "sex": "Female",
+        "bank_id": 102,
+        "bank_cash_amount": 0,
+        "bank_expiration_date": 2005
+    }
+]
