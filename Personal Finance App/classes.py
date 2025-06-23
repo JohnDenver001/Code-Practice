@@ -15,6 +15,7 @@ class User:
 class System:
     def __init__(self):
         self.accounts = []
+        self.current_user = None
 
     def save_data_json(self):
         data = []
@@ -93,41 +94,39 @@ class System:
         else:
             print("Account is not registered!\n"
                   "Please register first!\n")
-            return None, None, False
+            return None, False
 
         if current_account.password != password:
             print("Password don't match!\n")
-            return None, None, False
+            return None, False
 
         print("Account login successfully!\n")
-        return username, current_account, True
+        self.current_user = current_account
+        return username, True
 
-def add_main_income(log_on_account):
-    main_income_amount = validate_integer("Enter your main income amount: ")
-    log_on_account.main_income = main_income_amount
-    print("Your main income has been updated successfully!\n")
+    def add_main_income(self):
+        main_income_amount = validate_integer("Enter your main income amount: ")
+        self.current_user.main_income = main_income_amount
+        print("Your main income has been updated successfully!\n")
 
-def add_side_income(log_on_account):
-    side_income_amount = validate_integer("Enter your side income amount: ")
-    log_on_account.side_income = side_income_amount
-    print("Your side income has been updated successfully!\n")
+    def add_side_income(self):
+        side_income_amount = validate_integer("Enter your side income amount: ")
+        self.current_user.side_income = side_income_amount
+        print("Your side income has been updated successfully!\n")
 
-def add_food_expense(log_on_account):
-    expense_info = get_expense_info()
-    log_on_account.food_expense.append(expense_info)
-    print("Your Expense has been updated\n")
+    def add_type_expense(self, type_name):
+        expense_info = get_expense_info()
+        getattr(self.current_user, type_name).append(expense_info)
+        print(f"Your {type_name.replace('_',' ')} has been updated!")
 
-def add_rent_expense(log_on_account):
-    expense_info = get_expense_info()
-    log_on_account.rent_expense.append(expense_info)
-    print("Your Expense has been updated\n")
+    def user_logout(self):
+        while True:
+            log_out = input("Confirm logout (YES or NO): ").upper()
 
-def add_clothing_expense(log_on_account):
-    expense_info = get_expense_info()
-    log_on_account.clothing_expense.append(expense_info)
-    print("Your Expense has been updated\n")
-
-def add_other_expense(log_on_account):
-    expense_info = get_expense_info()
-    log_on_account.other_expense.append(expense_info)
-    print("Your Expense has been updated\n")
+            if log_out == "YES":
+                self.current_user = None
+                return
+            elif log_out == "NO":
+                return
+            else:
+                print("Enter 'YES' or 'NO' only!\n")

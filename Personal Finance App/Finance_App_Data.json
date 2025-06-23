@@ -4,35 +4,22 @@
         "password": "John123123",
         "income": {
             "main_income": 5000,
-            "side_income": null
+            "side_income": 10000
         },
         "expense": {
             "food_expense": [
                 {
-                    "expense_date": "February 29, 2005",
-                    "expense_amount": 5000
-                },
-                {
-                    "expense_date": "December 20, 2025",
-                    "expense_amount": 20000
-                },
-                {
-                    "expense_date": "June 23, 2020",
-                    "expense_amount": 50000
+                    "expense_date": "March 20, 2025",
+                    "expense_amount": 500
                 }
             ],
             "rent_expense": [
                 {
-                    "expense_date": "July 15, 2021",
-                    "expense_amount": 5000
+                    "expense_date": "July 1, 2025",
+                    "expense_amount": 300
                 }
             ],
-            "clothing_expense": [
-                {
-                    "expense_date": "March 21, 2001",
-                    "expense_amount": 50000
-                }
-            ],
+            "clothing_expense": [],
             "other_expense": []
         }
     },
@@ -40,27 +27,23 @@
         "username": "Denver",
         "password": "Denver123123",
         "income": {
-            "main_income": null,
-            "side_income": null
+            "main_income": 10000,
+            "side_income": 5000
         },
         "expense": {
-            "food_expense": [],
+            "food_expense": [
+                {
+                    "expense_date": "January 10, 2025",
+                    "expense_amount": 500
+                }
+            ],
             "rent_expense": [],
-            "clothing_expense": [],
-            "other_expense": []
-        }
-    },
-    {
-        "username": "Acar",
-        "password": "Acar123123",
-        "income": {
-            "main_income": 500000,
-            "side_income": null
-        },
-        "expense": {
-            "food_expense": [],
-            "rent_expense": [],
-            "clothing_expense": [],
+            "clothing_expense": [
+                {
+                    "expense_date": "April 23, 2025",
+                    "expense_amount": 5000
+                }
+            ],
             "other_expense": []
         }
     }

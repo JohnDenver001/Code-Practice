@@ -6,33 +6,25 @@ def validate_integer(word):
         except ValueError:
             print("Enter number only!\n")
 
-def limit_choice(choice, number_one, number_two):
-    if choice < number_one or choice > number_two:
-        print(f"Please enter {number_one}-{number_two} only!")
-        return
-    return choice
-
-def user_logout():
+def get_choice(prompt, min_num, max_num):
     while True:
-        log_out = input("Confirm logout (YES or NO): ").upper()
-
-        if log_out == "YES":
-            return False
-        elif log_out == "NO":
-            return True
-        else:
-            print("Enter 'YES' or 'NO' only!\n")
+        user_choice = validate_integer(prompt)
+        if user_choice is None:
+            continue
+        if min_num <= user_choice <= max_num:
+            return user_choice
+        print(f"Please enter number {min_num}-{max_num} only!")
 
 def welcome_user():
     print("=====================================\n"
           "  WELCOME TO PERSONAL FINANCE APP\n"
           "=====================================")
     while True:
-        welcome_choice = validate_integer("[1] Register\n"
+        welcome_choice = get_choice("[1] Register\n"
                                           "[2] Login\n"
-                                          "Choice: ")
+                                          "Choice: ", 1, 3)
 
-        return limit_choice(welcome_choice, 1, 3)
+        return welcome_choice
 
 def user_action_choice(username):
     if not username:
@@ -42,37 +34,37 @@ def user_action_choice(username):
           f"    WELCOME {username}\n"
           "==========================")
     while True:
-        user_choice = validate_integer("Please choose your action\n"
+        user_choice = get_choice("Please choose your action\n"
                                        "[1] Add Income\n"
                                        "[2] Add Expense Transaction\n"
                                        "[3] Logout\n"
-                                       "Choice: ")
+                                       "Choice: ", 1, 3)
 
         print()
-        return limit_choice(user_choice, 1, 3)
+        return user_choice
 
 def add_income():
-    type_of_income = validate_integer("===================================\n"
+    type_of_income = get_choice("===================================\n"
                                       "Please select the type of income\n"
                                       "[1] Work Income (Monthly)\n"
                                       "[2] Side Hustle Income\n"
-                                      "Choice: ")
+                                      "Choice: ", 1, 2)
 
-    return limit_choice(type_of_income, 1, 2)
+    return type_of_income
 
 def add_expense():
-    type_of_expense = validate_integer("Please select the type of expense\n"
+    type_of_expense = get_choice("Please select the type of expense\n"
                                        "[1] Food Expense\n"
                                        "[2] Rent Expense\n"
                                        "[3] Clothing Expense\n"
                                        "[4] Other Expense\n"
-                                       "Choice: ")
-    return limit_choice(type_of_expense, 1, 4)
+                                       "Choice: ", 1, 4)
+    return type_of_expense
 
 
 def get_expense_info():
     print("Please enter the following expense infos")
-    expense_date = input("Enter transaction date (e.g., Feb. 8, 2006:")
+    expense_date = input("Enter transaction date (e.g., Feb. 8, 2006: ")
     expense_amount = validate_integer("Enter the amount: ")
 
     expense_info = {
