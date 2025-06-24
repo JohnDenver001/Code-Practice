@@ -1,5 +1,6 @@
 import json
 from helper_function import *
+from datetime import datetime
 
 class User:
     def __init__(self, username, password, main_income, side_income, food_expense, rent_expense, clothing_expense, other_expense):
@@ -28,10 +29,10 @@ class System:
                     "side_income": account.side_income
                 },
                 "expense": {
-                    "food_expense": account.food_expense,
-                    "rent_expense": account.rent_expense,
-                    "clothing_expense": account.clothing_expense,
-                    "other_expense": account.other_expense
+                    "food_expense": date_strf_expense(account, "food_expense"),
+                    "rent_expense": date_strf_expense(account, "rent_expense"),
+                    "clothing_expense": date_strf_expense(account, "clothing_expense"),
+                    "other_expense": date_strf_expense(account, "other_expense")
                 }
             }
             data.append(account_data)
@@ -49,10 +50,10 @@ class System:
                                            password = account["password"],
                                            main_income = account["income"]["main_income"],
                                            side_income = account["income"]["side_income"],
-                                           food_expense = account["expense"]["food_expense"],
-                                           rent_expense = account["expense"]["rent_expense"],
-                                           clothing_expense = account["expense"]["clothing_expense"],
-                                           other_expense = account["expense"]["other_expense"]
+                                           food_expense = date_strp_expense(account["expense"]["food_expense"]),
+                                           rent_expense = date_strp_expense(account["expense"]["rent_expense"]),
+                                           clothing_expense = date_strp_expense(account["expense"]["clothing_expense"]),
+                                           other_expense = date_strp_expense(account["expense"]["other_expense"])
                                            )
 
                 self.accounts.append(account_credentials)
@@ -75,7 +76,8 @@ class System:
             print("Password too weak!\n")
             return
 
-        account_credentials = User(username, password, None, None, [], [], [], [])
+        hashed_password = hash_password(password)
+        account_credentials = User(username, hashed_password, 0, 0, [], [], [], [])
         self.accounts.append(account_credentials)
         print("Account created successfully!\n"
               f"Welcome {username}")
@@ -86,6 +88,7 @@ class System:
         print("        LOGIN")
         username = input("Enter username: ")
         password = input("Enter password: ")
+        hashed_password = hash_password(password)
 
         for account in self.accounts:
             if username == account.username:
@@ -96,7 +99,7 @@ class System:
                   "Please register first!\n")
             return None, False
 
-        if current_account.password != password:
+        if current_account.password != hashed_password:
             print("Password don't match!\n")
             return None, False
 
@@ -130,3 +133,34 @@ class System:
                 return
             else:
                 print("Enter 'YES' or 'NO' only!\n")
+
+    def show_user_dashboard(self):
+        total_income = self.current_user.main_income + (self.current_user.side_income * 4)
+
+        total_food_expense = sum(expense["expense_amount"] for expense in self.current_user.food_expense)
+        total_rent_expense = sum(expense["expense_amount"] for expense in self.current_user.rent_expense)
+        total_clothing_expense = sum(expense["expense_amount"] for expense in self.current_user.clothing_expense)
+        total_other_expense = sum(expense["expense_amount"] for expense in self.current_user.other_expense)
+
+        total_expense = total_food_expense + total_rent_expense + total_clothing_expense + total_other_expense
+
+        print("===================================")
+        print(f"    {self.current_user.username} DASHBOARD")
+        print(f"Total Monthly Income: {total_income}")
+        print(f"Total Expense: {total_expense}")
+        print("===================================\n")
+
+    def reco_budget_plan(self):
+        total_income = self.current_user.main_income + (self.current_user.side_income * 4)
+
+        needs_allocation = total_income * .50
+        savings_allocation = total_income * .20
+        wants_allocation = total_income * .30
+
+        print("=====50-30-20 RULE BUDGET=====")
+        print(f"Needs Allocation: {needs_allocation}")
+        print(f"Savings Allocation: {savings_allocation}")
+        print(f"Wants Allocation: {wants_allocation}")
+        print("==============================\n"
+              "This is solely based on your income\n"
+              "You can adjust this anytime you want.\n")

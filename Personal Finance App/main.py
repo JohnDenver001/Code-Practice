@@ -21,6 +21,12 @@ def handle_user_action(system):
             handle_expense(system)
 
         elif action_choice == 3:
+            system.show_user_dashboard()
+
+        elif action_choice == 4:
+            system.reco_budget_plan()
+
+        elif action_choice == 5:
             system.user_logout()
             return False
 
@@ -38,20 +44,15 @@ def handle_income(system):
 def handle_expense(system):
     expense_type = add_expense()
 
-    if expense_type == 1:
-        system.add_type_expense("food_expense")
-        system.save_data_json()
+    expense_types = {
+        1: "food_expense",
+        2: "rent_expense",
+        3: "clothing_expense",
+        4: "other_expense"
+    }
 
-    elif expense_type == 2:
-        system.add_type_expense("rent_expense")
-        system.save_data_json()
-
-    elif expense_type == 3:
-        system.add_type_expense("clothing_expense")
-        system.save_data_json()
-
-    elif expense_type == 4:
-        system.add_type_expense("other_expense")
+    if expense_type in expense_types:
+        system.add_type_expense(expense_types[expense_type])
         system.save_data_json()
 
 def main():

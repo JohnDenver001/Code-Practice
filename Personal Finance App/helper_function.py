@@ -1,3 +1,6 @@
+from datetime import datetime
+import hashlib
+
 def validate_integer(word):
     while True:
         try:
@@ -37,8 +40,10 @@ def user_action_choice(username):
         user_choice = get_choice("Please choose your action\n"
                                        "[1] Add Income\n"
                                        "[2] Add Expense Transaction\n"
-                                       "[3] Logout\n"
-                                       "Choice: ", 1, 3)
+                                        "[3] Show Dashboard\n"
+                                        "[4] Recommend a Budget Plan\n"
+                                       "[5] Logout\n"
+                                       "Choice: ", 1, 5)
 
         print()
         return user_choice
@@ -47,13 +52,14 @@ def add_income():
     type_of_income = get_choice("===================================\n"
                                       "Please select the type of income\n"
                                       "[1] Work Income (Monthly)\n"
-                                      "[2] Side Hustle Income\n"
+                                      "[2] Side Hustle Income (Weekly)\n"
                                       "Choice: ", 1, 2)
 
     return type_of_income
 
 def add_expense():
-    type_of_expense = get_choice("Please select the type of expense\n"
+    type_of_expense = get_choice("=================================\n"
+                                        "Please select the type of expense\n"
                                        "[1] Food Expense\n"
                                        "[2] Rent Expense\n"
                                        "[3] Clothing Expense\n"
@@ -61,14 +67,39 @@ def add_expense():
                                        "Choice: ", 1, 4)
     return type_of_expense
 
-
 def get_expense_info():
-    print("Please enter the following expense infos")
-    expense_date = input("Enter transaction date (e.g., Feb. 8, 2006: ")
-    expense_amount = validate_integer("Enter the amount: ")
+    print("=========================================\n"
+          "Please enter the following expense infos")
+    while True:
+        date_str = input("Enter transaction date (YYYY-MM-DD) ")
+        try:
+            expense_date = datetime.strptime(date_str, "%Y-%m-%d")
+            break
+        except ValueError:
+            print("Invalid Date -- Use the format (YYYY-MM-DD)")
 
+    expense_amount = validate_integer("Enter the amount: ")
     expense_info = {
         "expense_date": expense_date,
         "expense_amount": expense_amount
     }
     return expense_info
+
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+#STRPTIME = String -> Object datetime
+#STRFTIME = Object datetime -> String
+
+def date_strp_expense(data_list):
+    return [{
+            "expense_date": datetime.strptime(expense["expense_date"], "%Y-%m-%d"),
+            "expense_amount": expense["expense_amount"]
+            } for expense in data_list]
+
+def date_strf_expense(account, expense_name):
+    return [{
+        "expense_date": expense["expense_date"].strftime("%Y-%m-%d"),
+        "expense_amount": expense["expense_amount"]}
+        for expense in getattr(account, expense_name)]
+

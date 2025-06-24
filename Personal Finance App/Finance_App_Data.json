@@ -1,49 +1,33 @@
 [
     {
         "username": "John",
-        "password": "John123123",
+        "password": "9c7498496099b5509bbd2f79f07ed1a4f6bead4fdbdf92b2505ce872f264b0a3",
         "income": {
-            "main_income": 5000,
-            "side_income": 10000
-        },
-        "expense": {
-            "food_expense": [
-                {
-                    "expense_date": "March 20, 2025",
-                    "expense_amount": 500
-                }
-            ],
-            "rent_expense": [
-                {
-                    "expense_date": "July 1, 2025",
-                    "expense_amount": 300
-                }
-            ],
-            "clothing_expense": [],
-            "other_expense": []
-        }
-    },
-    {
-        "username": "Denver",
-        "password": "Denver123123",
-        "income": {
-            "main_income": 10000,
+            "main_income": 50000,
             "side_income": 5000
         },
         "expense": {
             "food_expense": [
                 {
-                    "expense_date": "January 10, 2025",
-                    "expense_amount": 500
-                }
-            ],
-            "rent_expense": [],
-            "clothing_expense": [
-                {
-                    "expense_date": "April 23, 2025",
+                    "expense_date": "2025-02-13",
                     "expense_amount": 5000
+                },
+                {
+                    "expense_date": "2025-06-13",
+                    "expense_amount": 1000
                 }
             ],
+            "rent_expense": [
+                {
+                    "expense_date": "2025-07-23",
+                    "expense_amount": 10000
+                },
+                {
+                    "expense_date": "2025-07-19",
+                    "expense_amount": 20000
+                }
+            ],
+            "clothing_expense": [],
             "other_expense": []
         }
     }
