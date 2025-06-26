@@ -35,15 +35,16 @@ def user_action_choice(username):
 
     print("===========================\n"
           f"    WELCOME {username}\n"
-          "==========================")
+          "===========================")
     while True:
         user_choice = get_choice("Please choose your action\n"
                                        "[1] Add Income\n"
                                        "[2] Add Expense Transaction\n"
                                         "[3] Show Dashboard\n"
                                         "[4] Recommend a Budget Plan\n"
-                                       "[5] Logout\n"
-                                       "Choice: ", 1, 5)
+                                        "[5] Expense Category Analysis\n"
+                                       "[6] Logout\n"
+                                       "Choice: ", 1, 6)
 
         print()
         return user_choice
@@ -102,4 +103,3 @@ def date_strf_expense(account, expense_name):
         "expense_date": expense["expense_date"].strftime("%Y-%m-%d"),
         "expense_amount": expense["expense_amount"]}
         for expense in getattr(account, expense_name)]
-

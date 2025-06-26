@@ -3,7 +3,7 @@
         "username": "John",
         "password": "9c7498496099b5509bbd2f79f07ed1a4f6bead4fdbdf92b2505ce872f264b0a3",
         "income": {
-            "main_income": 50000,
+            "main_income": 60000,
             "side_income": 5000
         },
         "expense": {
@@ -27,7 +27,40 @@
                     "expense_amount": 20000
                 }
             ],
-            "clothing_expense": [],
+            "clothing_expense": [
+                {
+                    "expense_date": "2025-06-23",
+                    "expense_amount": 5000
+                }
+            ],
+            "other_expense": [
+                {
+                    "expense_date": "2026-05-13",
+                    "expense_amount": 2000
+                },
+                {
+                    "expense_date": "2025-02-13",
+                    "expense_amount": 13000
+                }
+            ]
+        }
+    },
+    {
+        "username": "Denver",
+        "password": "ac4a6c57976938efbb5ce1523b8925fb9b9116aaa8c8888ce595d0fbfbfb623a",
+        "income": {
+            "main_income": 30000,
+            "side_income": 10000
+        },
+        "expense": {
+            "food_expense": [],
+            "rent_expense": [],
+            "clothing_expense": [
+                {
+                    "expense_date": "2025-01-25",
+                    "expense_amount": 1000
+                }
+            ],
             "other_expense": []
         }
     }

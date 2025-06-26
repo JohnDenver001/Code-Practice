@@ -109,12 +109,12 @@ class System:
 
     def add_main_income(self):
         main_income_amount = validate_integer("Enter your main income amount: ")
-        self.current_user.main_income = main_income_amount
+        self.current_user.main_income += main_income_amount
         print("Your main income has been updated successfully!\n")
 
     def add_side_income(self):
         side_income_amount = validate_integer("Enter your side income amount: ")
-        self.current_user.side_income = side_income_amount
+        self.current_user.side_income += side_income_amount
         print("Your side income has been updated successfully!\n")
 
     def add_type_expense(self, type_name):
@@ -164,3 +164,24 @@ class System:
         print("==============================\n"
               "This is solely based on your income\n"
               "You can adjust this anytime you want.\n")
+
+    def expense_category_analysis(self):
+        total_food_expense = sum(expense["expense_amount"] for expense in self.current_user.food_expense)
+        total_rent_expense = sum(expense["expense_amount"] for expense in self.current_user.rent_expense)
+        total_clothing_expense = sum(expense["expense_amount"] for expense in self.current_user.clothing_expense)
+        total_other_expense = sum(expense["expense_amount"] for expense in self.current_user.other_expense)
+
+        total_expense = total_food_expense + total_rent_expense + total_clothing_expense + total_other_expense
+
+        food_expense_percentage = total_food_expense / total_expense
+        rent_expense_percentage = total_rent_expense / total_expense
+        clothing_expense_percentage = total_clothing_expense / total_expense
+        other_expense_percentage = total_other_expense / total_expense
+
+        print("======EXPENSE CATEGORY ANALYSIS======")
+        print(f"Food Expense: {food_expense_percentage * 100: .2f}% = {total_food_expense}")
+        print(f"Rent Expense: {rent_expense_percentage * 100: .2f}% = {total_rent_expense}")
+        print(f"Clothing Expense: {clothing_expense_percentage * 100: .2f}% = {total_clothing_expense}")
+        print(f"Other Expense: {other_expense_percentage * 100: .2f}% = {total_other_expense}")
+        print(f"TOTAL: 100% = {total_expense}")
+        print("=====================================\n")

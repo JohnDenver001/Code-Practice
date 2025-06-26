@@ -27,6 +27,9 @@ def handle_user_action(system):
             system.reco_budget_plan()
 
         elif action_choice == 5:
+            system.expense_category_analysis()
+
+        elif action_choice == 6:
             system.user_logout()
             return False
 
