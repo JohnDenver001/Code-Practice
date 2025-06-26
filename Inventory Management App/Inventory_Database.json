@@ -1,0 +1,16 @@
+[
+    {
+        "product_name": "Chicken",
+        "product_id": 101,
+        "product_quantity": 3,
+        "product_price": 500,
+        "product_category": "groceries"
+    },
+    {
+        "product_name": "KIFAY",
+        "product_id": 102,
+        "product_quantity": 2,
+        "product_price": 300,
+        "product_category": "clothing"
+    }
+]
