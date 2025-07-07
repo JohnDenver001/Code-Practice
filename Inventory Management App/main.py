@@ -1,5 +1,6 @@
 from classes import *
 
+
 def main():
     inventory = Inventory()
     inventory.load_data_from_json()

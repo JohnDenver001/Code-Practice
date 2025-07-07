@@ -12,5 +12,12 @@
         "product_quantity": 2,
         "product_price": 300,
         "product_category": "clothing"
+    },
+    {
+        "product_name": "Belly",
+        "product_id": 103,
+        "product_quantity": 10,
+        "product_price": 200,
+        "product_category": "groceries"
     }
 ]
