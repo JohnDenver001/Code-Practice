@@ -11,11 +11,28 @@ def validate_integer(word):
             print("Enter number only!\n")
 
 
+def auth_menu():
+    """First one to show after running the main file
+    User can either pick register or login"""
+
+    print("=====================================")
+    print("|WELCOME TO INVENTORY MANAGEMENT APP|")
+    print("=====================================")
+    print("[1] Register")
+    print("[2] Login")
+    while True:
+        user_choice = validate_integer("Enter choice: ")
+        if user_choice < 1 or user_choice > 2:
+            print("Please enter number 1-2 only!\n")
+        else:
+            return user_choice
+
+
 def get_user_action():
     """This function display welcoming User and get
     their action Ex. Add items/Remove Items"""
 
-    print("\n======WELCOME======")
+    print(f"\n======WELCOME======")
     while True:
         user_action = validate_integer(
             "[1] Add Product\n"
@@ -35,6 +52,7 @@ def get_user_action():
 def get_edit_area():
     """Gets the user input in what area
     the user wants to edit"""
+
     while True:
         edit_choice = validate_integer(
             "What do you want to edit?\n"
@@ -72,3 +90,8 @@ def get_product_category(self):
             show_available_product_category(self)
             continue
         return product_category
+
+
+def ending():
+    """Only load the current_user inventory"""
+    """Load it after the user successfully log ins"""

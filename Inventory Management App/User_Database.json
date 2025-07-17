@@ -1,18 +1,18 @@
 [
     {
         "username": "john",
-        "inventory": []
+        "password": "john123123"
     },
     {
         "username": "denver",
-        "inventory": []
+        "password": "denver123123"
     },
     {
         "username": "cahutay",
-        "inventory": []
+        "password": "cahutay123123"
     },
     {
         "username": "acar",
-        "inventory": []
+        "password": "acar123123"
     }
 ]

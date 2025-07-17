@@ -2,12 +2,16 @@ from helper_function import *
 import json
 import os
 
-file_path = os.path.join(
+inventory_database_path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "Inventory_Database.json"
 )
-
+user_database_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "User_Database.json"
+)
 
 class Products:
+    """Hold the product informations"""
+
     def __init__(
         self,
         product_name,
@@ -25,7 +29,9 @@ class Products:
 
 class Inventory:
     def __init__(self):
-        self.inventory_products = []  # List of products that has been added
+        self.user_inventory_list = [] #List of all users' inventory who have registered
+        self.current_user = None #Hold the current user who have logged on
+        self.current_user_inventory = [] #Hold the current user inventory -- In Product() object form
         self.product_category_list = [
             "groceries",
             "clothing",
@@ -34,41 +40,202 @@ class Inventory:
             "toys",
         ]  # List of available product category
 
-    def save_data_to_json(self):
-        """Save the data's added by user"""
-        data = []
-        for product in self.inventory_products:
+    def save_inventory_to_json(self):
+        """Save the product data's added by user"""
+
+        #Convert user current inventory from Product() to dict
+        temp_current_user_inventory = [] #Temporarily hold the current user inventory  -- In dict form
+
+        for product in self.current_user_inventory:
             product_information = {
                 "product_name": product.product_name,
                 "product_id": product.product_id,
                 "product_quantity": product.product_quantity,
                 "product_price": product.product_price,
-                "product_category": product.product_category,
+                "product_category": product.product_category
             }
-            data.append(product_information)
+            temp_current_user_inventory.append(product_information)
 
-        with open(file_path, "w") as file:
-            json.dump(data, file, indent=4)
+        #Load the 'Inventory_Database' file
+        with open(inventory_database_path, "r") as file:
+            data = json.load(file)
 
-    def load_data_from_json(self):
-        """Check if there is existing file for database, if yes - load it, else - Raise print Error"""
+        all_user_list = [] #Temporarily stores all the users inventory -- In dict form
+
+        for user in data: #Loop through each users in data
+            if user["username"] != self.current_user["username"]:
+                all_user_list.append(user)
+                continue
+            else:
+                user["inventory"] = temp_current_user_inventory
+        
+        with open(inventory_database_path, "w") as file:
+            json.dump(all_user_list, file, indent = 4)
+
+    def load_inventory_from_json(self):
+        """Convert user current inventory from dictionaries to Product()"""
+
+        for user_product in self.current_user["inventory" ]:
+            product_information = Products(
+                product_name = user_product["product_name"],
+                product_id = user_product["product_id"],
+                product_quantity = user_product["product_quantity"],
+                product_price = user_product["product_price"],
+                product_category = user_product["product_category"],
+            )
+            self.current_user_inventory.append(product_information)
+
+
+    def list_products(self):
+        print("==========================================")
+        print("             LIST OF PRODUCTS")
+        print("==========================================")
+        print("    Name     |  ID  | Quantity | Price | Category")
+
+        for i in range(len(self.inventory_products)):
+            print(f"[{i + 1}]: {self.inventory_products[i].product_name}  | {self.inventory_products[i].product_id} |     {self.inventory_products[i].product_quantity}     | {self.inventory_products[i].product_price} | {self.inventory_products[i].product_category.title()}")
+
+    def show_stats(self):
+        """Shows the current status of user's inventory and shows the breakdown of products category"""
+        total_products = len(self.inventory_products)
+        total_quantity = 0
+        total_value = 0
+        category_counts = {
+            "groceries": 0,
+            "clothing": 0,
+            "electronics": 0,
+            "tools": 0,
+            "toys": 0,
+        }
+
+        for product in self.inventory_products:
+            total_quantity += product.product_quantity
+            total_value += product.product_quantity * product.product_price
+
+            if product.product_category in category_counts:
+                category_counts[product.product_category] += 1
+
+        print("======INVENTORY STATUS======")
+        print(f"Total Products: {total_products}")
+        print(f"Total Quantity: {total_quantity}")
+        print(f"Total Value: {total_value}\n")
+        print("Category Breakdown:")
+        print(f"- Groceries: {category_counts["groceries"]}")
+        print(f"- Clothing: {category_counts["clothing"]}")
+        print(f"- Electronics: {category_counts["electronics"]}")
+        print(f"- Tools: {category_counts["tools"]}")
+        print(f"- Toys: {category_counts["toys"]}")
+
+
+class User:
+    def __init__(self):
+        self.user_list = []  # List of users who have registered
+        self.inventory = Inventory() #Inheritance of inventory
+
+    def save_user_credentials_to_json(self):
+        """After the user register, it saves the user credentials to json file"""
+
+        user_list_data = []  # Temporarily stores the users' data who have registered
+
+        for user in self.user_list:
+            user_credentials = {
+                "username": user["username"],
+                "password": user["password"],
+            }
+            user_list_data.append(user_credentials)
+
+        with open(user_database_path, "w") as file:
+            json.dump(user_list_data, file, indent=4)
+
+    def load_user_credentials_from_json(self):
+        """Load all the users' credentials who have registered"""
 
         try:
-            with open(file_path, "r") as file:
-                data = json.load(file)
+            with open(user_database_path, "r") as file:
+                user_data = json.load(file)
 
-            for product in data:
-                product_information = Products(
-                    product_name=product["product_name"],
-                    product_id=product["product_id"],
-                    product_quantity=product["product_quantity"],
-                    product_price=product["product_price"],
-                    product_category=product["product_category"],
-                )
-                self.inventory_products.append(product_information)
+            for user in user_data:
+                user_credentials = {"username": user["username"], "password": user["password"]}
+                self.user_list.append(user_credentials)
 
         except FileNotFoundError:
-            print("File not found! -- Starting Fresh")
+            print("Starting Fresh!")
+
+    def register(self):
+        """Register a user with username and password"""
+
+        print("\n=======REGISTER=======")
+        username = input("Enter username: ").lower()
+        password = input("Enter password: ")
+
+        # Check if user exist
+        for user in self.user_list:
+            if username == user["username"]:
+                print(f"\n{username.title()} is already taken")
+                return None
+
+        # Check if password is strong
+        if len(password) < 8:
+            print("Password too weak!\n")
+            return None
+
+        user_credentials = {"username": username, "password": password}
+        self.user_list.append(user_credentials) #Save the user_credentials to user list -- User()
+
+        print("\nRegistered sucessfully!")
+        print(f"Welcome {username.title()}")
+
+        user_inventory = {"username": username, "inventory": []}
+        self.inventory.user_inventory_list.append(user_inventory) #Register user inventory products -- Inventory()
+        
+        with open(inventory_database_path, "w") as file:
+            json.dump(self.inventory.user_inventory_list, file, indent = 4)
+    
+    def load_users(self):
+        """Check if there is an existing file 'Inventory_Database'
+        If yes, open file, loop through each users and store temporarily
+        If no, create a file then dump the new registered user"""
+    
+        try:
+            with open(inventory_database_path, "r") as file:
+                user_list = json.load(file)
+        
+            for user in user_list:
+                temp_user_inventory = {"username": user["username"], "inventory": user["inventory"]}
+                self.inventory.user_inventory_list.append(temp_user_inventory)
+
+        except FileNotFoundError:
+            print("Starting Fresh")
+
+    def login(self):
+        """Prompt the user to login"""
+        
+        print("\n=======LOGIN=======")
+        username = input("Enter username: ").lower()
+        password = input("Enter password: ")
+
+        # Find the username in user_database
+        for user in self.user_list:
+            if username == user["username"]:
+                current_user = user #Temporarily store the user to later check for password
+                break
+        else:
+            print(f"\n{username.title()} is not registered yet!")
+            return None
+
+        # Check if password match
+        if password != current_user["password"]:
+            print("\nPassword don't match!")
+            return None
+
+        #Switch the current user to Inventory_Database for later editing e.g., Add products and Remove products
+        for user in self.inventory.user_inventory_list:
+            if username == user["username"]:
+                self.inventory.current_user = user
+                break
+
+        print("\nLogin Successfully!")
+        return self.inventory.current_user
 
     def add_product(self):
         """Let a user add a product with product information"""
@@ -85,11 +252,9 @@ class Inventory:
                 print(f"\nProduct with Product#{product_id} is already added!\n")
                 return
 
-        product = Products(
-            product_name, product_id, product_quantity, product_price, product_category
-        )
+        product = Products(product_name, product_id, product_quantity, product_price, product_category)
 
-        self.inventory_products.append(product)
+        self.inventory.current_user_inventory.append(product)
         print(f"{product_name.title()} has been added successfully!\n")
 
     def remove_product(self):
@@ -100,7 +265,7 @@ class Inventory:
         for product in self.inventory_products:
             if product.product_id == search_id:
                 self.inventory_products.remove(product)
-                print(f"Removed {product.product_name.title()} sucessfully!")
+                print(f"Removed {product.product_name.title()} successfully!")
                 return
         else:
             print(f"Product with ID#{search_id} can't be found!")
@@ -165,45 +330,3 @@ class Inventory:
             current_product.product_category = new_product_category
 
             print(f"Product with ID#{search_id} has been sucessfully updated!\n")
-
-    def list_products(self):
-        print("==========================================")
-        print("             LIST OF PRODUCTS")
-        print("===========================================")
-        print("    Name     |  ID  | Quantity | Price | Category")
-
-        for i in range(len(self.inventory_products)):
-            print(
-                f"[{i + 1}]: {self.inventory_products[i].product_name}  | {self.inventory_products[i].product_id} |     {self.inventory_products[i].product_quantity}     | {self.inventory_products[i].product_price} | {self.inventory_products[i].product_category.title()}"
-            )
-
-    def show_stats(self):
-        """Shows the current status of user's inventory and shows the breakdown of products category"""
-        total_products = len(self.inventory_products)
-        total_quantity = 0
-        total_value = 0
-        category_counts = {
-            "groceries": 0,
-            "clothing": 0,
-            "electronics": 0,
-            "tools": 0,
-            "toys": 0,
-        }
-
-        for product in self.inventory_products:
-            total_quantity += product.product_quantity
-            total_value += product.product_quantity * product.product_price
-
-            if product.product_category in category_counts:
-                category_counts[product.product_category] += 1
-
-        print("======INVENTORY STATS======")
-        print(f"Total Products: {total_products}")
-        print(f"Total Quantity: {total_quantity}")
-        print(f"Total Value: {total_value}\n")
-        print("Category Breakdown:")
-        print(f"- Groceries: {category_counts["groceries"]}")
-        print(f"- Clothing: {category_counts["clothing"]}")
-        print(f"- Electronics: {category_counts["electronics"]}")
-        print(f"- Tools: {category_counts["tools"]}")
-        print(f"- Toys: {category_counts["toys"]}")
