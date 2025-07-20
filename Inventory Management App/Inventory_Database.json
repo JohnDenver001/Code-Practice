@@ -1,18 +1,53 @@
 [
     {
-        "username": "john",
+        "username": "acar",
         "inventory": []
     },
     {
+        "username": "john",
+        "inventory": [
+            {
+                "product_name": "tite",
+                "product_id": 101,
+                "product_quantity": 123,
+                "product_price": 123123,
+                "product_category": "groceries"
+            }
+        ]
+    },
+    {
         "username": "denver",
-        "inventory": []
+        "inventory": [
+            {
+                "product_name": "tite",
+                "product_id": 101,
+                "product_quantity": 100,
+                "product_price": 20,
+                "product_category": "tools"
+            },
+            {
+                "product_name": "pepe",
+                "product_id": 102,
+                "product_quantity": 200,
+                "product_price": 10,
+                "product_category": "groceries"
+            }
+        ]
     },
     {
         "username": "cahutay",
         "inventory": []
     },
     {
-        "username": "acar",
+        "username": "mary",
+        "inventory": []
+    },
+    {
+        "username": "grace",
+        "inventory": []
+    },
+    {
+        "username": "amores",
         "inventory": []
     }
 ]

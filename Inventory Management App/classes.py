@@ -26,7 +26,6 @@ class Products:
         self.product_price = product_price
         self.product_category = product_category
 
-
 class Inventory:
     def __init__(self):
         self.user_inventory_list = [] #List of all users' inventory who have registered
@@ -68,11 +67,12 @@ class Inventory:
                 continue
             else:
                 user["inventory"] = temp_current_user_inventory
+                all_user_list.append(user)
         
         with open(inventory_database_path, "w") as file:
             json.dump(all_user_list, file, indent = 4)
 
-    def load_inventory_from_json(self):
+    def load_user_inventory_from_json(self):
         """Convert user current inventory from dictionaries to Product()"""
 
         for user_product in self.current_user["inventory" ]:
@@ -84,8 +84,7 @@ class Inventory:
                 product_category = user_product["product_category"],
             )
             self.current_user_inventory.append(product_information)
-
-
+        
     def list_products(self):
         print("==========================================")
         print("             LIST OF PRODUCTS")
@@ -128,9 +127,9 @@ class Inventory:
 
 
 class User:
-    def __init__(self):
+    def __init__(self, inventory):
         self.user_list = []  # List of users who have registered
-        self.inventory = Inventory() #Inheritance of inventory
+        self.inventory = inventory #Inheritance of inventory
 
     def save_user_credentials_to_json(self):
         """After the user register, it saves the user credentials to json file"""
@@ -160,6 +159,36 @@ class User:
 
         except FileNotFoundError:
             print("Starting Fresh!")
+    
+    def save_user(self, new_registered_user):
+        """After the register, save the user to inventory_database"""
+
+        with open(inventory_database_path, "r") as file:
+            data = json.load(file)
+        
+        temp_all_user_inventory = [] #Temporarily store all the user's inventory
+
+        for user in data:
+            user_info = {"username": user["username"], "inventory": user["inventory"]}
+            temp_all_user_inventory.append(user_info)
+        
+        self.inventory.user_inventory_list.append(new_registered_user) #Register user inventory products -- Inventory()
+        temp_all_user_inventory.append(new_registered_user)
+
+        with open(inventory_database_path, "w") as file:
+            json.dump(temp_all_user_inventory, file, indent = 4)       
+
+    def load_users(self):
+        try:
+            with open(inventory_database_path, "r") as file:
+                user_list = json.load(file)
+        
+            for user in user_list:
+                temp_user_inventory = {"username": user["username"], "inventory": user["inventory"]}
+                self.inventory.user_inventory_list.append(temp_user_inventory)
+
+        except FileNotFoundError:
+            print("Starting Fresh")
 
     def register(self):
         """Register a user with username and password"""
@@ -172,12 +201,12 @@ class User:
         for user in self.user_list:
             if username == user["username"]:
                 print(f"\n{username.title()} is already taken")
-                return None
+                return
 
         # Check if password is strong
         if len(password) < 8:
             print("Password too weak!\n")
-            return None
+            return
 
         user_credentials = {"username": username, "password": password}
         self.user_list.append(user_credentials) #Save the user_credentials to user list -- User()
@@ -186,26 +215,7 @@ class User:
         print(f"Welcome {username.title()}")
 
         user_inventory = {"username": username, "inventory": []}
-        self.inventory.user_inventory_list.append(user_inventory) #Register user inventory products -- Inventory()
-        
-        with open(inventory_database_path, "w") as file:
-            json.dump(self.inventory.user_inventory_list, file, indent = 4)
-    
-    def load_users(self):
-        """Check if there is an existing file 'Inventory_Database'
-        If yes, open file, loop through each users and store temporarily
-        If no, create a file then dump the new registered user"""
-    
-        try:
-            with open(inventory_database_path, "r") as file:
-                user_list = json.load(file)
-        
-            for user in user_list:
-                temp_user_inventory = {"username": user["username"], "inventory": user["inventory"]}
-                self.inventory.user_inventory_list.append(temp_user_inventory)
-
-        except FileNotFoundError:
-            print("Starting Fresh")
+        self.save_user(user_inventory)
 
     def login(self):
         """Prompt the user to login"""
@@ -244,10 +254,10 @@ class User:
         product_id = validate_integer("Enter product ID: ")
         product_quantity = validate_integer("Enter product quantity: ")
         product_price = validate_integer("Enter product price (Per Item): ")
-        product_category = get_product_category(self)
+        product_category = get_product_category(self.inventory)
 
         # Check if product ID exists
-        for product in self.inventory_products:
+        for product in self.inventory.current_user_inventory:
             if product.product_id == product_id:
                 print(f"\nProduct with Product#{product_id} is already added!\n")
                 return

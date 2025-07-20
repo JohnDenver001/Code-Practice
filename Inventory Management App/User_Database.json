@@ -1,5 +1,9 @@
 [
     {
+        "username": "acar",
+        "password": "acar123123"
+    },
+    {
         "username": "john",
         "password": "john123123"
     },
@@ -12,7 +16,15 @@
         "password": "cahutay123123"
     },
     {
-        "username": "acar",
-        "password": "acar123123"
+        "username": "mary",
+        "password": "mary123123"
+    },
+    {
+        "username": "grace",
+        "password": "grace123123"
+    },
+    {
+        "username": "amores",
+        "password": "amores123123"
     }
 ]
