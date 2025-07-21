@@ -86,19 +86,21 @@ class Inventory:
             self.current_user_inventory.append(product_information)
         
     def list_products(self):
-        print("==========================================")
-        print("             LIST OF PRODUCTS")
-        print("==========================================")
-        print("    Name     |  ID  | Quantity | Price | Category")
-
-        for i in range(len(self.inventory_products)):
-            print(f"[{i + 1}]: {self.inventory_products[i].product_name}  | {self.inventory_products[i].product_id} |     {self.inventory_products[i].product_quantity}     | {self.inventory_products[i].product_price} | {self.inventory_products[i].product_category.title()}")
+        print(f"=" * 60)
+        print(f"{'PRODUCT LIST':^60}")
+        print(f"=" * 60)
+        print(f"{'No.':<5} {'ID':<8} {'Name':<15} {'Qty':<10} {'Price':<10} {'Category':<9}")
+        print(f"=" * 60)
+        
+        for i, product in enumerate(self.current_user_inventory):
+            print(f"{f'[{i + 1}]':<5} {product.product_id:<8} {product.product_name:<15} {product.product_quantity:<10} {product.product_price:<10} {product.product_category:<8}")
 
     def show_stats(self):
         """Shows the current status of user's inventory and shows the breakdown of products category"""
-        total_products = len(self.inventory_products)
+        total_products = len(self.current_user_inventory)
         total_quantity = 0
         total_value = 0
+
         category_counts = {
             "groceries": 0,
             "clothing": 0,
@@ -107,23 +109,24 @@ class Inventory:
             "toys": 0,
         }
 
-        for product in self.inventory_products:
+        for product in self.current_user_inventory:
             total_quantity += product.product_quantity
             total_value += product.product_quantity * product.product_price
 
             if product.product_category in category_counts:
                 category_counts[product.product_category] += 1
 
-        print("======INVENTORY STATUS======")
+        print("========INVENTORY STATUS========")
         print(f"Total Products: {total_products}")
         print(f"Total Quantity: {total_quantity}")
         print(f"Total Value: {total_value}\n")
-        print("Category Breakdown:")
+        print("=======CATEGORY BREAKDOWN=======")
         print(f"- Groceries: {category_counts["groceries"]}")
         print(f"- Clothing: {category_counts["clothing"]}")
         print(f"- Electronics: {category_counts["electronics"]}")
         print(f"- Tools: {category_counts["tools"]}")
         print(f"- Toys: {category_counts["toys"]}")
+        print("================================")
 
 
 class User:
@@ -254,7 +257,7 @@ class User:
         product_id = validate_integer("Enter product ID: ")
         product_quantity = validate_integer("Enter product quantity: ")
         product_price = validate_integer("Enter product price (Per Item): ")
-        product_category = get_product_category(self.inventory)
+        product_category = get_product_category(self)
 
         # Check if product ID exists
         for product in self.inventory.current_user_inventory:
@@ -272,9 +275,9 @@ class User:
 
         search_id = validate_integer("Enter the product's ID you want to remove: ")
 
-        for product in self.inventory_products:
+        for product in self.inventory.current_user_inventory:
             if product.product_id == search_id:
-                self.inventory_products.remove(product)
+                self.inventory.current_user_inventory.remove(product)
                 print(f"Removed {product.product_name.title()} successfully!")
                 return
         else:
@@ -283,9 +286,10 @@ class User:
 
     def edit_product(self):
         """Let a user edit a product information -- even all information at once"""
+        
         search_id = validate_integer("Enter the product's ID you want to edit: ")
 
-        for product in self.inventory_products:
+        for product in self.inventory.current_user_inventory:
             if product.product_id == search_id:
                 current_product = product
                 break
