@@ -16,24 +16,22 @@ def handle_login(user, inventory):
         return
 
     inventory.load_user_inventory_from_json()
-    handle_user_interaction(user, inventory)
+    handle_user_interaction(inventory)
 
-def handle_user_interaction(current_user, inventory):
+def handle_user_interaction(inventory):
     """Handle user interaction"""
+
     while True:
         user_action = get_user_action()
 
         if user_action == 1:
-            current_user.add_product()
-            inventory.save_inventory_to_json()
+            inventory.add_product()
 
         elif user_action == 2:
-            current_user.remove_product()
-            inventory.save_inventory_to_json()
+            inventory.remove_product()
 
         elif user_action == 3:
-            current_user.edit_product()
-            inventory.save_inventory_to_json()
+            inventory.edit_product()
 
         elif user_action == 4:
             inventory.list_products()
@@ -44,14 +42,17 @@ def handle_user_interaction(current_user, inventory):
         elif user_action == 6:
             print("\nThank You!")
             return
+        
+        if user_action in [1, 2, 3]:
+            inventory.save_inventory_to_json()
 
 def main():
     """Main program --- Starts the system"""
 
     inventory = Inventory()
-    user = User(inventory)
+    user = User(inventory)  
     user.load_user_credentials_from_json() #Load users from user_database path
-    user.load_users() #Load users from inventory_database path
+    user.load_users_inventory() #Load users from inventory_database path
 
     while True:
         authentication = auth_menu()
