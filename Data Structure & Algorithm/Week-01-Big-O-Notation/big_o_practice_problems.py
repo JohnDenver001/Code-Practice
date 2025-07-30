@@ -27,6 +27,28 @@ def find_second_largest(arr):
     - Can you solve it in one pass?
     """
 
+    if len(arr) < 2:
+        print("None")
+        return
+    
+    max_num = arr[0]
+    second_max_num = arr[0]
+
+    for num in arr:
+        if num > max_num:
+            second_max_num = max_num
+            max_num = num
+
+        if num < max_num and num > second_max_num:
+            second_max_num = num
+
+    if max_num == second_max_num:
+        print("None")
+        return
+    
+    print(f"Largest: {max_num}")
+    print(f"Second Largest: {second_max_num}")
+
 arr = [5, 1, 2, 5, 1, 8, 2, 5, 3, 2, 9, 13, 1, 10, 13, 11, 12]
 find_second_largest(arr)
 """
@@ -53,7 +75,7 @@ def has_duplicates(arr):
     Analyze:
     - Try multiple approaches (nested loops, sorting, using extra space)
     - Compare their time and space complexities
-    """     
+    """
 
 # Problem 3: Reverse an array in-place
 def reverse_array_inplace(arr):
